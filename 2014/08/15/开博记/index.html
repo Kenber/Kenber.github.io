@@ -4,17 +4,24 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Kenber</title>
+  <title>开博记 | Kenber</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Life is not about finding yourself, but creating yourself.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Kenber">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Update 2016.3.6 ：搬迁博客至github.io，弃用WordPress，改用Hexo。
+开这个博客的想法最初源于偶然在网上看到的，用App Engine架个人网站，那时便觉得这玩意儿记一下自己作为开发菜鸟的心路历程、技术笔记神马的，以后用到的话很方便啊，没准还能搭救些开发小白，万一以后自己技术有所建树，这堆blog整理一下不就能出书了么（我显然是YY过头了，神犇们请无视）……
+然而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开博记">
+<meta property="og:url" content="http://yoursite.com/2014/08/15/开博记/index.html">
 <meta property="og:site_name" content="Kenber">
-<meta property="og:description" content="Life is not about finding yourself, but creating yourself.">
+<meta property="og:description" content="Update 2016.3.6 ：搬迁博客至github.io，弃用WordPress，改用Hexo。
+开这个博客的想法最初源于偶然在网上看到的，用App Engine架个人网站，那时便觉得这玩意儿记一下自己作为开发菜鸟的心路历程、技术笔记神马的，以后用到的话很方便啊，没准还能搭救些开发小白，万一以后自己技术有所建树，这堆blog整理一下不就能出书了么（我显然是YY过头了，神犇们请无视）……
+然而">
+<meta property="og:updated_time" content="2016-03-06T15:39:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kenber">
-<meta name="twitter:description" content="Life is not about finding yourself, but creating yourself.">
+<meta name="twitter:title" content="开博记">
+<meta name="twitter:description" content="Update 2016.3.6 ：搬迁博客至github.io，弃用WordPress，改用Hexo。
+开这个博客的想法最初源于偶然在网上看到的，用App Engine架个人网站，那时便觉得这玩意儿记一下自己作为开发菜鸟的心路历程、技术笔记神马的，以后用到的话很方便啊，没准还能搭救些开发小白，万一以后自己技术有所建树，这堆blog整理一下不就能出书了么（我显然是YY过头了，神犇们请无视）……
+然而">
   
     <link rel="alternative" href="/atom.xml" title="Kenber" type="application/atom+xml">
   
@@ -179,74 +186,7 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
-  
-    <article id="post-判断AudioRecord权限究竟是否被禁" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/06/判断AudioRecord权限究竟是否被禁/" class="article-date">
-  	<time datetime="2016-03-06T15:25:00.000Z" itemprop="datePublished">2016-03-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/06/判断AudioRecord权限究竟是否被禁/">判断AudioRecord权限究竟是否被禁</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。</p>
-<p>AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audioRecord对象的recordingState字段造成影响，所以在startRecording()方法后通过check该字段可判断其所需权限有无：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) &#123;</span><br><span class="line">    Log.d(“TAG”， “permission denied”);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>有人推荐通过check一小段AudioRecord读出的buffer中数据是否有效来判别，虽说也可以达到目的，但可操作性不强，而且拿不到权限时也不该继续record的。至于有人提到的Context.checkSelfPermission( permission_name)基本只是check一下你Manifest里给了权限没，权限意外被禁这种事它搞不定的。</p>
-<p>Github issue: <a href="https://github.com/android-cn/android-discuss/issues/185#" target="_blank" rel="external">如何检测AudioRecord是否获得了录音权限？ #185</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AudioRecord/">AudioRecord</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/权限检测/">权限检测</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Android/">Android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-开博记" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-开博记" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2014/08/15/开博记/" class="article-date">
@@ -262,12 +202,27 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/08/15/开博记/">开博记</a>
+    <h1 class="article-title" itemprop="name">
+      开博记
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Life/">Life</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/首发/">首发</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Life/">Life</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -292,24 +247,23 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Life/">Life</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/首发/">首发</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Life/">Life</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/06/判断AudioRecord权限究竟是否被禁/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          判断AudioRecord权限究竟是否被禁
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
   
 </article>
 
@@ -318,11 +272,28 @@
 
 
 
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="开博记" data-title="开博记" data-url="http://yoursite.com/2014/08/15/开博记/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"Kenber"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
 
-  
-  
+
 </div>
       <footer id="footer">
   <div class="outer">
@@ -346,8 +317,8 @@
 		fancybox: true,
 		mathjax: true,
 		animate: undefined,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
