@@ -4,17 +4,21 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Archives: 2016 | Kenber</title>
+  <title>判断AudioRecord权限究竟是否被禁 | Kenber</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Life is not about finding yourself, but creating yourself.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Kenber">
-<meta property="og:url" content="http://yoursite.com/archives/2016/index.html">
+  <meta name="description" content="最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。
+AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="判断AudioRecord权限究竟是否被禁">
+<meta property="og:url" content="http://yoursite.com/2016/03/06/判断AudioRecord权限究竟是否被禁/index.html">
 <meta property="og:site_name" content="Kenber">
-<meta property="og:description" content="Life is not about finding yourself, but creating yourself.">
+<meta property="og:description" content="最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。
+AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audi">
+<meta property="og:updated_time" content="2016-03-06T15:26:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kenber">
-<meta name="twitter:description" content="Life is not about finding yourself, but creating yourself.">
+<meta name="twitter:title" content="判断AudioRecord权限究竟是否被禁">
+<meta name="twitter:description" content="最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。
+AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audi">
   
     <link rel="alternative" href="/atom.xml" title="Kenber" type="application/atom+xml">
   
@@ -179,57 +183,88 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-判断AudioRecord权限究竟是否被禁" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/03/06/判断AudioRecord权限究竟是否被禁/" class="archive-article-date">
-  	<time datetime="2016-03-06T15:25:00.000Z" itemprop="datePublished">Mar 6</time>
+    <div class="article-meta">
+      <a href="/2016/03/06/判断AudioRecord权限究竟是否被禁/" class="article-date">
+  	<time datetime="2016-03-06T15:25:00.000Z" itemprop="datePublished">2016-03-06</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/03/06/判断AudioRecord权限究竟是否被禁/">判断AudioRecord权限究竟是否被禁</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      判断AudioRecord权限究竟是否被禁
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AudioRecord/">AudioRecord</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/权限检测/">权限检测</a></li></ul>
 	</div>
 
-          
+        
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Android/">Android</a>
 	</div>
 
 
-        </div>
         <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
+      </div>
+      
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。</p>
+<p>AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audioRecord对象的recordingState字段造成影响，所以在startRecording()方法后通过check该字段可判断其所需权限有无：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) &#123;</span><br><span class="line">    Log.d(“TAG”， “permission denied”);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有人推荐通过check一小段AudioRecord读出的buffer中数据是否有效来判别，虽说也可以达到目的，但可操作性不强，而且拿不到权限时也不该继续record的。至于有人提到的Context.checkSelfPermission( permission_name)基本只是check一下你Manifest里给了权限没，权限意外被禁这种事它搞不定的。</p>
+<p>Github issue: <a href="https://github.com/android-cn/android-discuss/issues/185#" target="_blank" rel="external">如何检测AudioRecord是否获得了录音权限？ #185</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+  
+</article>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="判断AudioRecord权限究竟是否被禁" data-title="判断AudioRecord权限究竟是否被禁" data-url="http://yoursite.com/2016/03/06/判断AudioRecord权限究竟是否被禁/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"Kenber"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 </div>
       <footer id="footer">
@@ -255,8 +290,8 @@
 		mathjax: true,
 		animate: undefined,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: undefined

@@ -70,7 +70,7 @@
 						<li>Tags</li>
 						
 						
-						<li>About</li>
+						<li>A propos</li>
 						
 					</ul>
 				</div>
@@ -111,7 +111,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/AudioRecord/" style="font-size: 10px;">AudioRecord</a> <a href="/tags/权限检测/" style="font-size: 10px;">权限检测</a>
 					</div>
 				</section>
 				
@@ -181,11 +181,11 @@
 
       <div class="body-wrap">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-判断AudioRecord权限究竟是否被禁" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/06/hello-world/" class="article-date">
-  	<time datetime="2016-03-06T03:29:00.000Z" itemprop="datePublished">2016-03-06</time>
+      <a href="/2016/03/06/判断AudioRecord权限究竟是否被禁/" class="article-date">
+  	<time datetime="2016-03-06T15:25:00.000Z" itemprop="datePublished">2016-03-06</time>
 </a>
     </div>
   
@@ -198,7 +198,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/06/hello-world/">Hello World</a>
+      <a class="article-title" href="/2016/03/06/判断AudioRecord权限究竟是否被禁/">判断AudioRecord权限究竟是否被禁</a>
     </h1>
   
 
@@ -207,15 +207,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>最近在做语音检测相关的东西，遇到个权限检测的需求，正巧也看到github上有人问这问题，刚好来记录一下。</p>
+<p>AudioRecord在执行其startRecording()方法时会check一下其是否具有所需权限（即使你在Manifest中声明过也可能被某些xx管家意外禁掉），一些加入了动态权限检测的第三方Rom会在此时弹出对话框询问是否赋予权限，此时整个应用的执行被阻塞住，权限的赋予与否将对audioRecord对象的recordingState字段造成影响，所以在startRecording()方法后通过check该字段可判断其所需权限有无：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) &#123;</span><br><span class="line">    Log.d(“TAG”， “permission denied”);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有人推荐通过check一小段AudioRecord读出的buffer中数据是否有效来判别，虽说也可以达到目的，但可操作性不强，而且拿不到权限时也不该继续record的。至于有人提到的Context.checkSelfPermission( permission_name)基本只是check一下你Manifest里给了权限没，权限意外被禁这种事它搞不定的。</p>
+<p>Github issue: <a href="https://github.com/android-cn/android-discuss/issues/185#" target="_blank" rel="external">如何检测AudioRecord是否获得了录音权限？ #185</a></p>
 
       
     </div>
@@ -223,7 +219,15 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AudioRecord/">AudioRecord</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/权限检测/">权限检测</a></li></ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Android/">Android</a>
+	</div>
+
 
       
       <div class="clearfix"></div>
